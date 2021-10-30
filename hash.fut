@@ -15,14 +15,14 @@ module type hashable = {
 module mk_hashable(T: ty): (hashable with ty = T.t) = {
   type ty = T.t
   let  hashWithSalt (salt:i64) (x:t) = salt `combine` hash x
-  let  hash (x:t) = hashWithSalt defaultSalt (i64.T x)
+  let  hash (x:t) = hashWithSalt defaultSalt (T.to_i64 x)
 }
 
-let hash_1d 'h [d] (xs:[d]h.t):i64 =
-    reduce h.hashWithSalt xs
+let hash_1d 'h       [d] (xs:      [d]h.ty):i64 =
+    reduce h.hashWithSalt defaultSalt xs
 
-let hash_2d 'h [w][d] (xs:[w][d]h.t):i64 =
-    reduce h.hashWithSalt (map hash_1d xs)
+let hash_2d 'h    [w][d] (xs:   [w][d]h.ty):i64 =
+    reduce h.hashWithSalt defaultSalt (map hash_1d xs)
 
-let hash_3d 'h [h][w][d] (xs:[h][w][d]h.t):i64 =
-    reduce h.hashWithSalt (map hash_2d xs)
+let hash_3d 'h [h][w][d] (xs:[h][w][d]h.ty):i64 =
+    reduce h.hashWithSalt defaultSalt (map hash_2d xs)
