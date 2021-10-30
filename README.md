@@ -1,0 +1,2 @@
+# futharkHash
+Hashing in Futhark
